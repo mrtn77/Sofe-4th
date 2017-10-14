@@ -14,7 +14,7 @@ bool Board::init()
     {
         return false;
     }
-    
+	
     initTiles();
     initPlayer();
     initClickListener();
@@ -30,51 +30,67 @@ void Board::initTiles()
     float yPosition = screenSize.height/3;
     
     //First tile
-    auto stoneTile = Sprite::create("stone.png");
+	
+	auto stoneTile = Sprite::create("stone.png");
     stoneTile->setScale(0.85, 0.5);
-    
-    stoneTile->setPosition(Vec2(stoneTile->getContentSize().width / 2, yPosition));
-    
+	stoneTile->setPosition(Vec2(stoneTile->getContentSize().width / 2, yPosition));
+    //se agrega el primer bloque
     addChild(stoneTile);
-    
+	
     
     firstTileSize = stoneTile->getContentSize();
     firstTilePosition = stoneTile->getPosition();
     
     //6 tiles
-    for(int i = 1; i < 7; i++)
+    for(int i = 1; i < 3; i++)
     {
         Sprite* tile = Sprite::create("grass.png");
         
         tile->setScale(0.85, 0.5);
         
-        float xPosition = screenSize.width / 7 * i + tile->getContentSize().width / 2;
+        float xPosition = screenSize.width / 3 * i + tile->getContentSize().width / 2;
         
-        tile->setPosition(Vec2(xPosition, yPosition));
+       tile->setPosition(Vec2(xPosition, yPosition));
         
-        addChild(tile);
+ //se añaden los bloques 
+		addChild(tile);
         
         //SceneLabel
-        auto label = Label::create();
+   		auto label = Label::create();
         label->setScale(1.f/0.85, 2.f);
         label->setPosition(Vec2(tile->getContentSize().width/2, 0));
         
         tile->addChild(label);
-        label->setString(sceneNames[i-1]);
-    }
+   label->setString(sceneNames[i-1]);
+   
+
+	
+
+
+
+	
+	}
 }
 
 void Board::initPlayer()
 {
     playerSprite = Sprite::create("p_stand.png");
     playerSprite->setScale(0.5);
-    
+	
+	   
     float xPosition = firstTilePosition.x;
     float yPosition = firstTilePosition.y + playerSprite->getContentSize().height/2 - 6;
     
     playerSprite->setPosition(Vec2(xPosition, yPosition));
     
-    addChild(playerSprite);
+   addChild(playerSprite);
+
+	
+
+
+
+
+
 }
 
 void Board::initClickListener()
@@ -98,11 +114,13 @@ void Board::stopDiceAndMove()
     
     Size screenSize = Director::getInstance()->getVisibleSize();
     
-    Vec2 finalPosition = Vec2(screenSize.width / 7 * actualNumber + firstTileSize.width / 2, playerSprite->getPosition().y);
+    Vec2 finalPosition = Vec2(screenSize.width / 3 * actualNumber + firstTileSize.width / 2, playerSprite->getPosition().y);
     
     auto jumps = JumpTo::create(actualNumber * 0.6, finalPosition, 60, actualNumber);
     
     playerSprite->runAction(jumps);
+	
+	
     
     schedule([=](float dt){
         Director::getInstance()->pushScene(sceneConstructors[actualNumber-1]());
@@ -117,8 +135,19 @@ void Board::startDice()
     diceLabel->setPosition(Vec2(screenSize/3.f * 2.f));
     diceLabel->setSystemFontSize(40);
     
-    addChild(diceLabel);
-    
+	auto dado = Sprite::create("dice1.png");
+ dado->setPosition(Vec2(screenSize / 3.f * 2.f));
+ 
+ auto dado2 = Sprite::create("dice2.png");
+ dado2->setPosition(Vec2(screenSize / 3.f * 2.f));
+
+		
+ addChild(diceLabel,0);
+
+ addChild(dado,1);
+ addChild(dado2,2);
+
+
     schedule([=](float dt){
 
         actualNumber %= sceneConstructors.size();
@@ -127,7 +156,22 @@ void Board::startDice()
         string text = "";
         text.push_back(actualNumber+'0');
         diceLabel->setString(text);
-        
+		
+		if (actualNumber==1)
+		{
+			dado2->setVisible(false);
+			dado->setVisible(true);
+
+		}
+		if (actualNumber==2)
+		{
+			dado->setVisible(false);
+			dado2->setVisible(true);
+
+		}
+		
+
+		
     }, 0.1f, -1, 0, "changeDiceNumber");
     
 }

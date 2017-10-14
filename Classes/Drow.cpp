@@ -50,7 +50,7 @@ void Drow::initAnimation()
     auto leftEase = EaseSineInOut::create(leftAnim);
     
     auto sequence = Sequence::create(rightEase, leftEase, NULL);
-    auto repeatSequence = Repeat::create(sequence, 5);
+    auto repeatSequence = Repeat::create(sequence, 100000);
     
     barSprite->runAction(repeatSequence);
 }

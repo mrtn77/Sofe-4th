@@ -31,6 +31,7 @@ public:
     void initClickListener();
     void startDice();
     void stopDice();
+	void segundo();
     
     int actualNumber = 1;
     
@@ -38,21 +39,15 @@ public:
     
     vector<SceneConstructors> sceneConstructors =
     {
-        JumpingHippo::createScene,
-        Chips::createScene,
+       Chips::createScene,
         Drow::createScene,
-        Gluttony::createScene,
-        Stacking::createScene,
-        Counting::createScene
+       
     };
     vector<string> sceneNames =
     {
-        "Jumping Hippo",
+        
         "Chips",
-        "Drow",
-        "Gluttony",
-        "Stacking",
-        "Counting"
+        "Drow"
     };
     
     void stopDiceAndMove();
